@@ -1,0 +1,72 @@
+﻿@model List<ReportingAssistant.Models.Project>
+
+@{
+    ViewBag.Title = "ViewAll";
+}
+
+<h2>ViewAll</h2>
+<script src="~/JS/DeleteScript.js"></script>
+<script src="~/Scripts/bootbox.min.js"></script>
+@using (Html.BeginForm("ViewAll", "project", new { area = "Admin" }, FormMethod.Post))
+{
+    @Html.TextBox("search", "", new { style = "Width:1000px", placeholder = "Enter Project Name To Search" })
+    <input style="align-content:center;height:30px" type="submit" class="btn btn-info" value="GO" onclick="this.Values" />
+}
+
+
+<a href="~/Admin/Project/Create" style="align-items:flex-start" class="btn btn-sm btn-success mb-2 mt-2">Create</a>
+<table class="table-bordered col-lg-12 col-sm-12 col-md-12" id="searchGridView">
+    <tr>
+        <th>Image</th>
+        <th>Project Name</th>
+        <th>Date Of Start</th>
+        <th>Availability Status</th>
+        <th>Category</th>
+        <th>Actions</th>
+    </tr>
+
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Photo))
+                    {
+                        <img style="max-height:100px; max-width:100px; padding-left:10px" src="@Url.Content(item.Photo)" alt="">
+                    }
+                </td>
+                <td>@item.ProjectName</td>
+                <td>@item.DateOfStart.Value.ToShortDateString()</td>
+                <td>@item.AvailabilityStatus</td>
+
+                <td>@item.Category.CategoryName</td>
+                <td>
+                    @*<a href="~/Areas/AdminHome/home" class="btn btn-warning">Back</a>*@
+                    <a href="~/Admin/Project/Edit?ids=@item.ProjectID" class="btn btn-sm btn-info">Edit</a>
+                    <span id="confirmDeleteSpan_@item.ProjectID" style="display:none">
+                        <span>Are You sure you want to delete?</span>
+                        <button type="submit" class="btn btn-danger"> Yes </button>
+                        <button type="#" class="btn btn-primary" onclick="confirmDelete('@item.ProjectID', false)"> No </button>
+                    </span>
+                    <span id="deletespan_@item.ProjectID">
+                        <a href="#" class="btn btn-sm btn-danger" onclick="confirmProjectDelete('@item.ProjectID', true)"> Delete </a>
+                    </span>
+                </td>
+                <br />
+            </tr>
+        }
+    }
+    else
+    {
+
+    }
+
+</table>
+
+@Html.ValidationSummary()
+@Html.Raw(TempData["Message"])
+
+<script>
+        var deleteProjectUrl = '@Url.Action("DeleteProject", "Project", new { area = "Admin" })';
+</script>

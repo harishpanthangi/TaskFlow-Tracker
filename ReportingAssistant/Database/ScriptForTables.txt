@@ -1,0 +1,71 @@
+﻿CREATE DATABASE Reporting
+
+CREATE TABLE Categories (
+    CategoryID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    CategoryName NVARCHAR(50) NOT NULL UNIQUE,
+    CONSTRAINT CK_CategoryName CHECK (PATINDEX('%[^a-zA-Z0-9 ]%', CategoryName) = 0)
+);
+
+GO
+
+CREATE TABLE Projects (
+    ProjectID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    ProjectName NVARCHAR(100) NOT NULL UNIQUE,
+    DateOfStart DATETIME NULL,
+    AvailabilityStatus NVARCHAR(50) NOT NULL,
+    CategoryID BIGINT NOT NULL,
+    Photo NVARCHAR(MAX) NULL,
+    
+    CONSTRAINT CK_ProjectName CHECK (PATINDEX('%[^a-zA-Z0-9 ]%', ProjectName) = 0),
+    
+    CONSTRAINT CK_AvailabilityStatus CHECK (AvailabilityStatus IN ('Available', 'Not Available')),
+    
+    CONSTRAINT FK_Projects_Categories FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
+GO
+
+CREATE TABLE Tasks (
+    TaskID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    Screen NVARCHAR(50) NOT NULL
+        CHECK (LEN(Screen) >= 2 AND LEN(Screen) <= 50),
+    Description NVARCHAR(MAX) NOT NULL
+        CHECK (LEN(Description) >= 2 AND LEN(Description) <= 10000),
+    AdminUserID NVARCHAR(128) NOT NULL,
+    UserID NVARCHAR(128) NOT NULL,
+    DateOfTask DATETIME NOT NULL,
+    Attachment NVARCHAR(255) NULL,
+    ProjectID BIGINT NOT NULL,
+    FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
+);
+
+GO
+
+CREATE TABLE TasksDone (
+    TaskDoneID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    Screen NVARCHAR(50) NOT NULL
+        CHECK (LEN(Screen) >= 2 AND LEN(Screen) <= 50),
+    Description NVARCHAR(MAX) NOT NULL
+        CHECK (LEN(Description) >= 2 AND LEN(Description) <= 10000),
+    UserID NVARCHAR(128) NOT NULL,
+    DateOfTaskDone DATETIME NOT NULL,
+    Attachment NVARCHAR(255) NULL,
+    ProjectID BIGINT NOT NULL,
+    FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
+);
+
+GO
+
+CREATE TABLE FinalComments (
+    FinalCommentID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    Screen NVARCHAR(50) NOT NULL
+        CHECK (LEN(Screen) >= 2 AND LEN(Screen) <= 50),
+    Description NVARCHAR(MAX) NOT NULL
+        CHECK (LEN(Description) >= 2 AND LEN(Description) <= 10000),
+    AdminUserID NVARCHAR(128) NOT NULL,
+    UserID NVARCHAR(128) NOT NULL,
+    DateOfFinalComment DATETIME NOT NULL,
+    Attachment NVARCHAR(255) NULL,
+    ProjectID BIGINT NOT NULL,
+    FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
+);

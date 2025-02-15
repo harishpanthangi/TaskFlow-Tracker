@@ -1,0 +1,92 @@
+﻿@model ReportingAssistant.Areas.ViewModel.uduser
+
+@{
+    ViewBag.Title = "UserDetailsEdit";
+}
+
+<h2>Edit User Details</h2>
+
+<script src="~/JS/MyHeader.js"></script>
+@*@using (Html.BeginForm("UserDetailsEdit", "UserDetails", new { area = "Administrator" }, FormMethod.Post, new { encrypt = "multipart/form-data" }))*@
+<form action="/Admin/UserDetail/UserDetailsEdit" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @*<div class="container d-flex justify-content-center">*@
+
+        <div class="form-row">
+            @Html.Raw(TempData["Message"])
+            @Html.HiddenFor(m => m.userid)
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.Username, new { @class = "mt-2" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.Username, new { placeholder = "Username", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Username)
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.DateOfBirth, new { @class = "mt-2" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.DateOfBirth, "{0:dd/MM/yyyy}", new {@type="date", placeholder = "dd/mm/yyyy", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DateOfBirth)
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.Email, new { @class = "mt-2" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.Mobile, new { @class = "mt-2" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.Mobile, new { placeholder = "Enter Mobile Number", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Mobile)
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.Address, new { @class = "mt-2" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.Address, new { placeholder = "Enter Full Address", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Address)
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.City, new { @class = "mt-2" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.City, new { placeholder = "City", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.City)
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.Country, new { @class = "mt-2" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.Country, new { placeholder = "Country", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Country)
+                </div>
+            </div>
+            <div class="form-group mt-2">
+                <label for="image">Image</label>
+                <input type="file" class="form-control-file" id="image" name="BaseImg" />
+            </div>
+            <a href="/admin/userdetail/userdetails" class="btn btn-danger mt-2 mr-5">Back</a><button type="submit" class="btn btn-success mt-2">Submit</button>
+
+            @Html.ValidationSummary()
+        </div>
+    @*</div>*@
+</form>

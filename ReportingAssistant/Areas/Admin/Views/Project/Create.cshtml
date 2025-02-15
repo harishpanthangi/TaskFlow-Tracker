@@ -1,0 +1,126 @@
+﻿@model ReportingAssistant.Models.Project
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<style type="text/css">
+    .astrisk:before {
+        content: "*";
+        font-weight: bold;
+        color: #A94442;
+        font-size: 12px;
+    }
+
+    .imgUpload {
+        display: none !important;
+    }
+
+    .btn-takephoto {
+        margin: 0px 0px 10px 0px;
+    }
+
+    .clsTxtGreen {
+        color: green;
+    }
+</style>
+<style type="text/css">
+    .astrisk:before {
+        content: "*";
+        font-weight: bold;
+        color: #A94442;
+        font-size: 12px;
+    }
+</style>
+
+<link href="~/Content/bootstrap-toggle.min.css" rel="stylesheet" />
+
+<!-- Js files-->
+
+<script src="~/Scripts/bootstrap-toggle.min.js"></script>
+
+
+
+
+<form action="~/Admin/Project/Create" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="form-row">
+        @Html.Raw(TempData["Message"])
+        @Html.HiddenFor(model => model.ProjectID)
+        <div class="row">
+            <div class="form-group col-md-12 col-sm-12 col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-4 col-sm-4 col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ProjectName)
+                            @Html.TextBoxFor(m => m.ProjectName, new { placeholder = "Project name", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ProjectName)
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-4 col-md-4">
+                        <div class="form-group">
+                            @Html.Label("Date Of Start")
+                            @Html.TextBoxFor(m => m.DateOfStart, new {@type="date", placeholder = "Date Of Start", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.DateOfStart)
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 margin-bottom">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.CategoryID)
+                            @Html.DropDownListFor(model => model.CategoryID, new SelectList(@ViewBag.list, "Value", "Text"), "-- Select --", htmlAttributes: new { @class = "form-control", @required = true })
+                            @Html.ValidationMessageFor(m => m.CategoryID)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="form-group col-md-4 col-sm-4 col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AvailabilityStatus, htmlAttributes: new { @class = "control-label astrisk" })
+                        @*@Html.CheckBoxFor(model => model.AvailabilityStatus, new { @value = true, @checked = "checked", @class = "isActive" })
+                        @Html.HiddenFor(model => model.AvailabilityStatus)*@
+                        <div>
+                            @Html.RadioButtonFor(model => model.AvailabilityStatus, "Available", new { @id = "available", @class = "isActive" })
+                            <label for="available">Available</label>
+                        </div>
+
+                        <div>
+                            @Html.RadioButtonFor(model => model.AvailabilityStatus, "Not Available", new { @id = "notAvailable", @class = "isActive" })
+                            <label for="notAvailable">Not Available</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4 col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" class="form-control-file" id="image" name="BaseImg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.ValidationSummary()
+    </div>
+    <div class="form-group col-md-12 col-sm-12 col-md-12">
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a href="ViewAll" class="btn btn-danger">Cancel</a>
+    </div>
+
+</form>
+
+<script>
+
+    $(function () {
+
+        $('.isActive').bootstrapToggle({
+            on: 'Yes',
+            off: 'No',
+            onstyle: 'info',
+            offstyle: 'warning',
+
+        });
+    })
+
+
+</script>

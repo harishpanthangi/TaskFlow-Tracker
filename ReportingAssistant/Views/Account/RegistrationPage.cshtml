@@ -1,0 +1,189 @@
+﻿@model ReportingAssistant.ViewModel.Registration
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+@*@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+        <div class="container d-flex justify-content-center">
+            <div class="form-row">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.Username)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.Username, new { placeholder = "Username", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Username)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.Password)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.Password, new { placeholder = "Password", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.ConfirmPassword)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.ConfirmPassword, new { placeholder = "Confirm Password", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.DateOfBirth)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.DateOfBirth, new { placeholder = "Please type Date Of Birth In a form of dd/mm/yyyy", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.DateOfBirth)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.Email)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.Mobile)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.Mobile, new { placeholder = "Enter Mobile Number", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Mobile)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.Address)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.Address, new { placeholder = "Enter Full Address", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Address)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.City)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.City, new { placeholder = "City", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.City)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.LabelFor(m => m.Country)
+                        </div>
+                        <div class="col-8">
+                            @Html.TextBoxFor(m => m.Country, new { placeholder = "Country", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Country)
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">Submit</button>
+
+                @Html.ValidationSummary()
+            </div>
+        </div>
+    }*@
+
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    <div class="container d-flex justify-content-center mt-0">
+        <div class="w-50">
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Username, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Username, new { placeholder = "Username", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                @Html.PasswordFor(m => m.Password, new { placeholder = "Password", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = "Confirm Password", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Mobile, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Mobile, new { placeholder = "Mobile", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.DateOfBirth, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.DateOfBirth, new { @type = "date", placeholder = "dd / mm / yyyy", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Address, new { @class = "form-label" })
+                @Html.TextAreaFor(m => m.Address, new { placeholder = "Address", @class = "form-control", rows = "3" })
+                @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.City, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.City, new { placeholder = "City", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                @Html.LabelFor(m => m.Country, new { @class = "form-label" })
+                @Html.DropDownListFor(m => m.Country, new SelectList(new[] { "Select Country", "USA", "UK", "India", "Canada" }), new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Country, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success">Register</button>
+            </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger mt-2" })
+        </div>
+    </div>
+}

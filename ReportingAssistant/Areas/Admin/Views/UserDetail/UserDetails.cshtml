@@ -1,0 +1,168 @@
+﻿@model List<ReportingAssistant.Areas.ViewModel.uduser>
+
+@{
+    ViewBag.Title = "UserDetails";
+}
+
+@*<h2>UserDetails</h2>*@
+
+<script src="~/JS/MyHeader.js"></script>
+@using (Html.BeginForm("UserDetails", "UserDetails", new { area = "Admin" }, FormMethod.Post, new { encrypt = "multipart/form-data" }))
+{
+    <div id="page-wrapper">
+        <div class="container-fluid paddind-top20">
+            <div class="row">
+                @Html.Raw(TempData["Message"])
+
+                <div class="col-md-12">
+                    <div class="white-box">
+                        <div class="btn-group pull-right">
+                            <button id="new" type="submit" value="New" class="btn btn-success" name="Command"><span><i class="fa fa-fw fa-file-text" aria-hidden="true"></i> New</span></button>
+                            <button id="edit" type="submit" value="Open" class="btn btn-info" name="Command"><span><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Open</span></button>
+                            <button id="delete" type="submit" value="Delete" class="btn btn-danger" name="Command" onclick="return DeleteConfirmation('Are you sure to delete the Category(s)?');"><span><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</span></button>
+                        </div>
+                        <h3 class="box-title">User Details</h3>
+                        <div class="table-responsive gridStyle">
+                            <table class="table table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>All</th>
+                                        <th>User Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile Number</th>
+                                        <th>Date Of Birth</th>
+                                        <th>Address</th>
+                                        <th>Operations</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var o in Model)
+                                    {
+                                        <tr>
+                                            <td><input type="checkbox" name="ids" id="ids" value="@o.Email" /> </td>
+                                            <td>@(o.Username == null ? "" : o.Username)</td>
+                                            <td>@(o.Email == null ? "" : o.Email)</td>
+                                            <td class="custom-th">@(o.Mobile == null ? "" : o.Mobile)</td>
+                                            <td>@(o.DateOfBirth == null ? "" : o.DateOfBirth.Value.ToShortDateString())</td>
+                                            <td>@(o.Address == null ? "" : o.Address)</td>
+                                            @*<td class="custom-th">
+                                                    @{if (o.isActive == true)
+                                                    {
+                                                        <span style="color:green">Active</span>
+                                                    }
+                                                    else if (o.isActive == false)
+                                                    {
+                                                        <span style="color:red">In-Active</span>
+                                                    }
+                                                    }
+                                                </td>*@
+                                            <td><a href="~/Admin/UserDetail/UserDetailsEdit?ids=@o.userid">Edit</a></td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+
+        $('#edit').attr("disabled", true);
+        $('#delete').attr("disabled", true);
+
+        $('#dataTables-example').find("input:checkbox").each(function () {
+            this.checked = null;
+        });
+
+        $("#dataTables-example th").each(function () {
+            if ($.trim($(this).text().toString().toLowerCase()) === "All") {
+                $(this).text('');
+                $("<input/>", { type: "checkbox", id: "cbSelectAll", value: "" }).appendTo($(this));
+                $(this).append("<span></span>");
+                $(this).css("background-color", "#CC8616");
+            }
+        });
+
+        $("#cbSelectAll").on("click", function () {
+            var ischecked = this.checked;
+            $('#dataTables-example').find("input:checkbox").each(function () {
+                this.checked = ischecked;
+                $('#delete').removeAttr("disabled");
+                $('#delete').removeClass("btnrmgrey").addClass("btnrm");
+                $('#edit').prop("disable", true);
+                $('#edit').removeClass("btnrm").addClass("btnrmgrey");
+            });
+            var checked = $("#dataTables-example td :checkbox:checked").length;
+            return ChkUnableDisable(checked)
+
+        });
+
+        $("input[name='ids']").click(function () {
+            var totalRows = $("#dataTables-example td :checkbox").length;
+            var checked = $("#dataTables-example td :checkbox:checked").length;
+
+            if (checked == totalRows) {
+                $("#dataTables-example").find("input:checkbox").each(function () {
+                    this.checked = true;
+                    return ChkUnableDisable(checked);
+                });
+            }
+            else {
+                $("#cbSelectAll").removeAttr("checked");
+
+                return ChkUnableDisable(checked)
+            }
+        });
+
+        //$('#dataTables-example').DataTable({
+        //    "lengthMenu": [[10, 25, 50,-1], [10, 25, 50,"All"]]
+
+        //});
+
+    });
+
+    function ChkUnableDisable(checked) {
+
+
+        if (checked < 1) {
+            $('#delete').attr("disabled", true);
+            $('#delete').removeClass("btnrm").addClass("btnrmgrey");
+            $('#edit').attr("disabled", true);
+            $('#edit').removeClass("btnrm").addClass("btnrmgrey");
+
+        }
+
+        else if (checked == 1) {
+            alert("jjj");
+            $('#edit').removeAttr("disabled");
+            $('#edit').removeClass("btnrmgrey").addClass("btnrm");
+            $('#delete').removeAttr("disabled");
+            $('#delete').removeClass("btnrmgrey").addClass("btnrm");
+        }
+
+        else if (checked > 1) {
+            $('#edit').attr("disabled", true);
+            $('#edit').removeClass("btnrm").addClass("btnrmgrey");
+            $('#delete').removeAttr("disabled");
+            $('#delete').removeClass("btnrmgrey").addClass("btnrm");
+        }
+
+        else {
+
+            $('#edit').attr("disabled", true);
+            $('#edit').removeClass("btnrm").addClass("btnrmgrey");
+            $('#delete').attr("disabled", true);
+            $('#delete').removeClass("btnrm").addClass("btnrmgrey");
+
+        }
+    }
+
+</script>

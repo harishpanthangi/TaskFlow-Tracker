@@ -1,0 +1,56 @@
+﻿@model List<ReportingAssistant.Models.Category>
+
+@{
+    ViewBag.Title = "ViewAll";
+}
+
+<h2>ViewAll</h2>
+<script src="~/JS/DeleteScript.js"></script>
+<script src="~/Scripts/bootbox.min.js"></script>
+<table class="table-bordered col-lg-12 col-sm-12 col-md-12">
+    <tr>
+        <th>Category Id</th>
+        <th>Category Name</th>
+        <th>Operation</th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CategoryID</td>
+                <td>@item.CategoryName</td>
+
+                <td>
+                    @*<button type="submit" class="btn btn-warning" onclick="back()"> Back </button>
+                        <button type="submit" class="btn btn-warning" onclick="create()"> Create </button>
+                        <button type="submit" class="btn btn-warning" onclick="edit(@item.CategoryId)"> Edit </button>*@
+                    @*<a href="~/Areas/AdminHome/home" class="btn btn-warning">Back</a>*@
+
+                    <a href="~/Admin/Category/Edit?ids=@item.CategoryID" class="btn btn-primary">Edit</a>
+                    <span id="confirmDeleteSpan_@item.CategoryID" style="display:none">
+                        <span>Are You sure you want to delete?</span>
+                        <button type="submit" class="btn btn-danger"> Yes </button>
+                        <button type="#" class="btn btn-primary" onclick="confirmDelete('@item.CategoryID', false)"> No </button>
+                    </span>
+                    <span id="deletespan_@item.CategoryID">
+                        <a href="#" class="btn btn-danger" onclick="confirmDelete('@item.CategoryID', true)"> Delete </a>
+                    </span>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+
+    }
+
+</table>
+<a href="~/Admin/Category/Create" class="btn btn-success mt-2">Create</a>
+
+@Html.ValidationSummary()
+@Html.Raw(TempData["Message"])
+@*@section  Scripts{
+    <script src="~/JS/DeleteScript.js"></script>
+}*@
+@Html.ValidationSummary()

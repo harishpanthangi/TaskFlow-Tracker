@@ -1,0 +1,25 @@
+﻿@model ReportingAssistant.Models.Category
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form action="~/Admin/Category/Edit" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div class="form-row">
+        @Html.Raw(TempData["Message"])
+        @Html.HiddenFor(model => model.CategoryID)
+        <div class="form-group col-md-12">
+            @Html.LabelFor(m => m.CategoryName)
+            @Html.TextBoxFor(m => m.CategoryName, new { placeholder = "Category name", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CategoryName)
+        </div>
+        @Html.ValidationSummary()
+    </div>
+    <div class="form-group col-md-12 col-sm-12 col-md-12">
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a href="ViewAll" class="btn btn-danger">Cancel</a>
+    </div>
+</form>

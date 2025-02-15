@@ -1,0 +1,178 @@
+﻿@model List<ReportingAssistant.Models.Task>
+
+@{
+    ViewBag.Title = "ViewTaskDetails";
+}
+<script src="~/JS/DeleteScript.js"></script>
+<script src="~/Scripts/bootbox.min.js"></script>
+
+@using (Html.BeginForm("ViewTaskDetails", "Task", new { area = "Admin" }, FormMethod.Post, new { encrypt = "multipart/form-data" }))
+{
+    <div id="page-wrapper">
+        <div class="container-fluid paddind-top20">
+            <div class="row">
+                @Html.Raw(TempData["Message"])
+                <div class="col-md-12">
+                    <div class="white-box">
+                        <h3 class="box-title">Task Details</h3>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<a href="~/Admin/Task/CreateTaskDetails" class="btn btn-success mb-2">Create</a>
+                        <div class="container-fluid active col-lg-12 col-md-12 col-lg-12">
+                            <table class="table table-bordered table-hover col-lg-12 col-md-12 col-lg-12" id="dataTables-example">
+                                <thead>
+                                    <tr>
+
+                                        <th>Screen</th>
+                                        <th>Description</th>
+                                        <th>Project Id</th>
+                                        <th>Date Of Task</th>
+                                        <th>Task Assigned By Admin</th>
+                                        <th>Task Assigned To User</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var o in Model)
+                                    {
+                                        <tr>
+
+                                            <td>@(o.Screen == null ? "" : o.Screen)</td>
+                                            <td>@(o.Description == null ? "" : o.Description)</td>
+                                            <td class="custom-th">@(o.ProjectID == null ? "" : o.ProjectID.ToString())</td>
+                                            <td>@(o.DateOfTask == null ? "" : o.DateOfTask.ToShortDateString())</td>
+                                            <td>@(o.AdminName == null ? "" : o.AdminName)</td>
+                                            <td>@(o.UserName == null ? "" : o.UserName)</td>
+
+                                            @*<td class="custom-th">
+                                                    @{if (o.isActive == true)
+                                                    {
+                                                        <span style="color:green">Active</span>
+                                                    }
+                                                    else if (o.isActive == false)
+                                                    {
+                                                        <span style="color:red">In-Active</span>
+                                                    }
+                                                    }
+                                                </td>*@
+                                            <td>
+                                                <a href="~/Admin/Task/TaskDetailsEdit?ids=@o.TaskID" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                                <span id="confirmDeleteSpan_@o.ProjectID" style="display:none">
+                                                    <span>Are You sure you want to delete?</span>
+                                                    <button type="submit" class="btn btn-danger"> Yes </button>
+                                                    <button type="#" class="btn btn-primary" onclick="confirmDelete('@o.TaskID', false)"> No </button>
+                                                </span>
+                                                <span id="deletespan_@o.TaskID">
+                                                    <a href="#" class="btn btn-xs btn-danger" onclick="confirmTaskDelete('@o.TaskID', true)"> <i class="fa fa-trash" style="margin:0px"></i> </a>
+                                                </span>
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@Html.ValidationSummary()
+@Html.Raw(TempData["Message"])
+<script>
+    var TaskDeleteUrl = '@Url.Action("DeleteTask", "Task", new { area = "Admin" })';
+    $(document).ready(function () {
+
+        $('#edit').attr("disabled", true);
+        $('#delete').attr("disabled", true);
+
+        $('#dataTables-example').find("input:checkbox").each(function () {
+            this.checked = null;
+        });
+
+        $("#dataTables-example th").each(function () {
+            if ($.trim($(this).text().toString().toLowerCase()) === "All") {
+                $(this).text('');
+                $("<input/>", { type: "checkbox", id: "cbSelectAll", value: "" }).appendTo($(this));
+                $(this).append("<span></span>");
+                $(this).css("background-color", "#CC8616");
+            }
+        });
+
+        $("#cbSelectAll").on("click", function () {
+            var ischecked = this.checked;
+            $('#dataTables-example').find("input:checkbox").each(function () {
+                this.checked = ischecked;
+                $('#delete').removeAttr("disabled");
+                $('#delete').removeClass("btnrmgrey").addClass("btnrm");
+                $('#edit').prop("disable", true);
+                $('#edit').removeClass("btnrm").addClass("btnrmgrey");
+            });
+            var checked = $("#dataTables-example td :checkbox:checked").length;
+            return ChkUnableDisable(checked)
+
+        });
+
+        $("input[name='ids']").click(function () {
+            var totalRows = $("#dataTables-example td :checkbox").length;
+            var checked = $("#dataTables-example td :checkbox:checked").length;
+
+            if (checked == totalRows) {
+                $("#dataTables-example").find("input:checkbox").each(function () {
+                    this.checked = true;
+                    return ChkUnableDisable(checked);
+                });
+            }
+            else {
+                $("#cbSelectAll").removeAttr("checked");
+
+                return ChkUnableDisable(checked)
+            }
+        });
+
+        //$('#dataTables-example').DataTable({
+        //    "lengthMenu": [[10, 25, 50,-1], [10, 25, 50,"All"]]
+
+        //});
+
+    });
+
+    function ChkUnableDisable(checked) {
+
+
+        if (checked < 1) {
+            $('#delete').attr("disabled", true);
+            $('#delete').removeClass("btnrm").addClass("btnrmgrey");
+            $('#edit').attr("disabled", true);
+            $('#edit').removeClass("btnrm").addClass("btnrmgrey");
+
+        }
+
+        else if (checked == 1) {
+            alert("jjj");
+            $('#edit').removeAttr("disabled");
+            $('#edit').removeClass("btnrmgrey").addClass("btnrm");
+            $('#delete').removeAttr("disabled");
+            $('#delete').removeClass("btnrmgrey").addClass("btnrm");
+        }
+
+        else if (checked > 1) {
+            $('#edit').attr("disabled", true);
+            $('#edit').removeClass("btnrm").addClass("btnrmgrey");
+            $('#delete').removeAttr("disabled");
+            $('#delete').removeClass("btnrmgrey").addClass("btnrm");
+        }
+
+        else {
+
+            $('#edit').attr("disabled", true);
+            $('#edit').removeClass("btnrm").addClass("btnrmgrey");
+            $('#delete').attr("disabled", true);
+            $('#delete').removeClass("btnrm").addClass("btnrmgrey");
+
+        }
+    }
+
+</script>

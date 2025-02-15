@@ -1,0 +1,34 @@
+﻿@model ReportingAssistant.Identity.ApplicationUser
+
+@{
+    ViewBag.Title = "Myprofile";
+}
+
+<h2>Myprofile</h2>
+
+<table class="table-bordered col-lg-12 col-sm-12 col-md-12">
+    <tr>
+        <th>UserName</th>
+        <td>@Model.UserName</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>@Model.Email</td>
+    </tr>
+    <tr>
+        <th>DOB:</th>
+        <td>@Model.Birthday.Value.ToShortDateString()</td>
+    </tr>
+    <tr>
+        <th>Mobile</th>
+        <td>@Model.PhoneNumber</td>
+    </tr>
+    <tr>
+        <th>City</th>
+        <td>@Model.city</td>
+    <tr>
+        <th>Country</th>
+        <td>@Model.country</td>
+    </tr>
+</table>
+<a href="/home/index" class="btn btn-info mt-1">Back</a>      <a href="/Account/changepassword?ids=@Model.UserName" class="btn btn-danger mt-1">Change Password</a>

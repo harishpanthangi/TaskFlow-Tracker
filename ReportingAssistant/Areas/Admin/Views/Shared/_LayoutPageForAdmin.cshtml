@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/CSS/Main.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/umd/popper.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /*.navbar {
+                    width: 100%;
+                    background-color: #555;
+                    overflow: auto;
+                }
+
+                    .navbar a {
+                        float: left;
+                        border-right: 1px solid gray;
+                        padding: 12px;
+                        color: white;
+                        text-decoration: none;
+                        font-size: 17px;
+                    }
+
+                        .navbar a:hover {
+                            background-color: black;
+                        }
+        */
+        .selected {
+            background-color: gold;
+        }
+
+
+        .field-validation-error, .validation-summary-errors {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            @*<div class="col-1 bg-info sidebar-hight">
+            <div class="list-group">
+                <a class="sidebar-items text-white" style="background-color:transparent" href="~/Admin/AdminHome/Home"><i class="fa fa-fw fa-home"></i></a>
+                <a class="sidebar-items text-white" style="background-color:transparent"><i class="fa fa-fw fa-search"></i></a>
+                <a class="sidebar-items text-white" style="background-color:transparent"><i class="fa fa-fw fa-warning"></i></a>
+            </div>
+        </div>*@
+            <header class="main-header">
+                <nav class="navbar navbar-fixed-top">
+                    <div class="navbar-header">
+                        <img src="~/content/images/project-image.jpeg" alt="report" class="login-logo">
+                    </div>
+                    <div class="header-message">
+                        Note: All information in this site have been generated for testing purposes only and does not reflect any real data.
+                    </div>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <ul class="nav navbar-nav">
+
+                            <li class="user user-menu">
+                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Profile">
+                                    <span class="fa fa-user fa-lg text-white" style="vertical-align: text-top"></span> <span class="text-decoration-none text-white">@User.Identity.Name</span>
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </nav>
+            </header>
+            <div class="col-2 sidebar-colour">
+                @if (User.Identity.IsAuthenticated == false)
+                {
+                    <div class="list-group">
+                        <h3 class="heading">Reporting Asst.</h3>
+                        <p class="para">Please Login</p>
+                        <a class="sidebar-items bg-light-subtle" href="/Account/RegistrationPage"><i class="fa fa-fw fa-registered"></i> Register</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="/Account/Login"><i class="fa fa-fw fa-lock"></i> Login</a>
+
+                    </div>
+
+                }
+                @if (User.Identity.IsAuthenticated == true && User.IsInRole("User"))
+
+                {
+                    <div class="text-success" style="font-style:oblique; font-size:medium">
+                        <h4 style="padding-right:50px;" class="text-primary">User</h4>
+                    </div>
+
+                    <div class="list-group">
+                        <a class="sidebar-items bg-light-subtle" href="/home/Index"><i class="fa fa-fw fa-home"></i> Home</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="/MyIssues/Issues"><i class="fa fa-fw fa-inbox"></i> My Issues</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="/Account/Myprofile"><i class="fa fa-fw fa-user-secret"></i> My Profile</a>
+                        @*<a href="/Account/changepassword"><i class="fa fa-fw fa-chain"></i> Change Password</a>*@
+                        <a class="sidebar-items m-top" href="/Account/Logout"><i class="fa fa-fw fa-user"></i> Logout</a>
+
+                    </div>
+                }
+
+                @if (User.Identity.IsAuthenticated == true && User.IsInRole("Admin"))
+                {
+                    <div style="font-style:oblique; font-size:medium">
+                        <h3 class="heading">Reporting Asst.</h3>
+                        <p class="text-success">Admin</p>
+                    </div>
+
+                    <div class="list-group">
+                        <a class="sidebar-items bg-light-subtle" href="~/Admin/AdminHome/Home"><i class="fa fa-fw fa-home"></i> Home</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="~/Admin/UserDetail/UserDetails"><i class="fa fa-fw fa-envelope"></i> User Details</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="~/Admin/Task/ViewTaskDetails"><i class="fa fa-fw fa-tasks"></i>All Tasks</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="~/Admin/Category/ViewAll"><i class="fa fa-fw fa-object-group"></i> Categories</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="~/Admin/AdminHome/Issues"><i class="fa fa-fw fa-inbox"></i> Issues</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="~/Account/Myprofile"><i class="fa fa-fw fa-user-secret"></i> My Profile</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="~/Admin/Project/ViewAll"><i class="fa fa-fw fa-product-hunt"></i> Project</a>
+                        <a class="sidebar-items bg-light-subtle m-top" href="/Account/Logout"><i class="fa fa-fw fa-user"></i> Logout</a>
+                    </div>
+                }
+            </div>
+            <div class="col-10 content-wrapper">
+                @RenderBody()
+                @*<hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>*@
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $('.list-group a').click(function () {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+</script>
+

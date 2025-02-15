@@ -1,0 +1,79 @@
+﻿.sidebar-hight{
+    height:100vh;
+}
+.sidebar-colour {
+    position: fixed;
+    background-color: #c6cef5;
+    left: 0;
+    top: 50px;
+    width: 154px;
+    height: calc(100vh - 50px);
+}
+.sidebar-items {
+    position: relative;
+    display: block;
+    padding: var(--bs-list-group-item-padding-y) var(--bs-list-group-item-padding-x);
+    text-decoration: none;
+}
+.heading{
+    font-size:19px;
+}
+.para {
+    color: #cf6ce0;
+    margin-bottom:0px;
+}
+.m-top{
+    margin-top:1px;
+}
+.login-container {
+    background-color: #b0c4de;
+    border-radius: 10px;
+}
+.image{
+    height:102px;
+    margin-top: 10px;
+}
+.admin {
+    color: #cf54f7;
+    margin-bottom:0px;
+}
+.main-header {
+    background-color:lightseagreen;
+    position: fixed;
+    height: 50px;
+    z-index: 1030;
+}
+.header-message {
+    color: #ff0;
+    font-style: italic;
+    vertical-align: middle;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    left: 450px;
+    font-size: 14px;
+    width: 390px;
+}
+.login-logo{
+    height:40px;
+}
+.content-wrapper {
+    margin-top: 50px; /* Space below the fixed header */
+    margin-left: 154px; /* Space beside the fixed sidebar */
+    padding: 20px;
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+    background-color: #f5f5f5;
+    width: -webkit-fill-available;
+}
+.mr-5{
+    margin-right:5px;
+}
+.btn-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}

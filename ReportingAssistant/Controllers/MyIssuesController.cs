@@ -59,6 +59,7 @@ namespace ReportingAssistant.Controllers
                     {
                         var admin_name = userDb.Users.Where(m => m.Id == item.AdminUserID).Select(m => m.UserName).FirstOrDefault();//removed date condition
                         var obj = new Task();
+                        obj.TaskID = item.TaskID;
                         obj.Screen = item.Screen;
                         obj.Description = item.Description;
                         obj.UserID = item.UserID;
@@ -66,6 +67,8 @@ namespace ReportingAssistant.Controllers
                         obj.DateOfTask = item.DateOfTask;
                         obj.AdminName = admin_name;
                         obj.UserName = item.UserName;
+                        obj.ProjectID = item.ProjectID;
+                        obj.Attachment = item.Attachment;
                         List.Add(obj);
                     }
                     var tdone = db.TasksDone.Where(m => m.UserID == UserId).ToList();// && m.DateOfTaskDone >= fromdate && m.DateOfTaskDone <= todate comntd in where cndtn
@@ -132,24 +135,26 @@ namespace ReportingAssistant.Controllers
         }
 
         [HttpPost]
-        public ActionResult Insertd_data(TasksDone tddata, HttpPostedFileBase BaseImg)
+        public ActionResult Insertd_data(TasksDone tddata)
         {
             if (ModelState.IsValid)
             {
 
                 string userid = Convert.ToString(Session["UserId"]);
-
+                
                 try
                 {
                     if (tddata.ProjectID.ToString() != "" && userid != "")
                     {
-                        string path = uploadImage(BaseImg);
+                        var task = db.Tasks.FirstOrDefault(t => t.TaskID == tddata.TaskID);
+                        string path = task?.Attachment;
                         var data = db.TasksDone.Create();
                         try
                         {
                             data.ProjectID = tddata.ProjectID;
                             data.Screen = tddata.Screen;
                             data.UserID = userid;
+                            data.AdminID = tddata.AdminID;
                             data.Description = tddata.Description;
                             data.DateOfTaskDone = DateTime.Now;
                             data.Attachment = path;

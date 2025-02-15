@@ -22,7 +22,7 @@ namespace ReportingAssistant.Models
         public string Description { get; set; }
         public string AdminID { get; set; }
 
-        [Required]
+        
         public string UserID { get; set; } // FK from AspNetUsers
 
         
@@ -33,6 +33,8 @@ namespace ReportingAssistant.Models
         [ForeignKey("Project")]
         public long? ProjectID { get; set; }
         public virtual Project Project { get; set; }
+        [NotMapped]
+        public long? TaskID { get; set; }
         [NotMapped]
         public List<Task> tlist { get; set; }
         [NotMapped]

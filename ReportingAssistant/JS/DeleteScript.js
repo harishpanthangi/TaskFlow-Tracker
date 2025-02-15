@@ -176,3 +176,40 @@ function deleteTask(taskId) {
         }
     });
 }
+
+//TasksDone function
+
+function fxsave_tskdn_data(ProjectId, Description, Screen, attachment, TaskID, AdminID) {
+    if (ProjectId != "" || null) {
+        //alert("jjj")
+        var formData = new FormData();  // Create FormData object to send files
+        formData.append("ProjectID", ProjectId);
+        formData.append("Description", Description);
+        formData.append("Screen", Screen);
+        formData.append("Attachment", attachment);
+        formData.append("TaskID", TaskID);
+        formData.append("AdminID", AdminID);
+        $.ajax({
+            type: "POST",
+            url: TaskDoneUrl,
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function (data2) {
+                alert("jjj")
+                if (data2.status == "success") {
+                    $("#success").html("<div class='alert alert-success alert-dismissable'><i class='fa fa-info-circle fa-fw'></i><button class='close' aria-hidden='true' data-dismiss='alert' type='button'>×</button>" + data2.message + "</div>");
+                    $("#Loder").modal('hide');
+                }
+
+                else {
+                    $("#warning").html("<div class='alert alert-danger alert-dismissable'><i class='fa fa-info-circle fa-fw'></i><button class='close' aria-hidden='true' data-dismiss='alert' type='button'>×</button>" + data2.message + "</div>");
+                    $("#Loder").modal('hide');
+                }
+            }
+
+
+        });
+    }
+}

@@ -36,6 +36,8 @@ CREATE TABLE Tasks (
     DateOfTask DATETIME NOT NULL,
     Attachment NVARCHAR(255) NULL,
     ProjectID BIGINT NOT NULL,
+    UserName NVARCHAR(256),
+    AdminName NVARCHAR(256),
     FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
 );
 
@@ -51,6 +53,7 @@ CREATE TABLE TasksDone (
     DateOfTaskDone DATETIME NOT NULL,
     Attachment NVARCHAR(255) NULL,
     ProjectID BIGINT NOT NULL,
+    AdminID NVARCHAR(128),
     FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
 );
 

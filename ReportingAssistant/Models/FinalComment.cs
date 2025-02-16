@@ -20,7 +20,7 @@ namespace ReportingAssistant.Models
         [StringLength(10000, MinimumLength = 2)]
         public string Description { get; set; }
 
-        [Required]
+        
         public string AdminUserID { get; set; } // FK from AspNetUsers
 
         [Required]

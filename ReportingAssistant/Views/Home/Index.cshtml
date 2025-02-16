@@ -4,19 +4,30 @@
 }
 
 <h2>Welcome to home page</h2>
-
-@*<div class="card">
-    <div class="card-header">Hello Hari</div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-2">
-                <h3 class="text-bg-primary">HAri</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <h3 class="text-bg-secondary">Siri</h3>
+@if (User.Identity.IsAuthenticated)
+{
+    <h3>Use below credentials for admin login</h3>
+    <div class="">
+        <div class="card w-50">
+            <div class="card-header">Admin Login Credentials</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <h4 class="">User Name:</h4>
+                    </div>
+                    <div class="col-7">
+                        <h4 class="">Harish</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <h4 class="">Password:</h4>
+                    </div>
+                    <div class="col-7">
+                        <h4 class="">Hari123</h4>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>*@
+}

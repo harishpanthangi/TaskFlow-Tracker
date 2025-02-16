@@ -46,7 +46,7 @@ namespace ReportingAssistant.Areas.Admin.Controllers
                 foreach (var i in User_Details)
                 {
 
-                    var TAdata = db.Tasks.Where(m => m.DateOfTask >= fromdate && m.DateOfTask <= todate && m.UserID == i.Id).ToList();
+                    var TAdata = db.Tasks.Where(m => m.UserID == i.Id).ToList();//Removed the Date condition(m.DateOfTask >= fromdate && m.DateOfTask <= todate &&)
                     if (TAdata != null)
                     {
                         foreach (var item in TAdata)
@@ -60,6 +60,10 @@ namespace ReportingAssistant.Areas.Admin.Controllers
                             obj.UserID = i.Id; //here UserName is there but I modified it to Id
                             obj.DateOfTask = item.DateOfTask;
                             obj.AdminUserID = item.AdminUserID;
+                            obj.AdminName = item.AdminName;
+                            obj.UserName = item.UserName;
+                            obj.ProjectID = item.ProjectID;
+                            obj.Attachment = item.Attachment;
                             List.Add(obj);
                         }
                     }
@@ -69,7 +73,7 @@ namespace ReportingAssistant.Areas.Admin.Controllers
                         return View();
                     }
 
-                    var tdone = db.TasksDone.Where(m => m.UserID == i.Id && m.DateOfTaskDone >= fromdate && m.DateOfTaskDone <= todate).ToList();
+                    var tdone = db.TasksDone.Where(m => m.UserID == i.Id).ToList();//Removed the date condition(&& m.DateOfTaskDone >= fromdate && m.DateOfTaskDone <= todate)
                     if (tdone != null)
                     {
                         foreach (var item2 in tdone)
@@ -82,7 +86,7 @@ namespace ReportingAssistant.Areas.Admin.Controllers
                             tddata.ProjectID = item2.ProjectID;
                             tddata.Attachment = item2.Attachment;
                             tddata.DateOfTaskDone = item2.DateOfTaskDone;
-                            tddata.UserID = i.Id;//UserNAme
+                            tddata.UserID = i.UserName;//here for name purpose we are sending name for id field UserNAme
                             tddata.Description = item2.Description;
                             tddata.AdminID = item2.AdminID;
                             tdoneList.Add(tddata);
@@ -96,7 +100,7 @@ namespace ReportingAssistant.Areas.Admin.Controllers
                         return View();
                     }
 
-                    var fcomments = db.FinalComments.Where(m => m.UserID == i.Id && m.DateOfFinalComment >= fromdate && m.DateOfFinalComment <= todate).ToList();
+                    var fcomments = db.FinalComments.Where(m => m.UserID == i.Id).ToList();//here removed the date cndtn( && m.DateOfFinalComment >= fromdate && m.DateOfFinalComment <= todate)
                     if (fcomments != null)
                     {
                         foreach (var item3 in fcomments)
@@ -108,8 +112,8 @@ namespace ReportingAssistant.Areas.Admin.Controllers
                             fcdata.Project = item3.Project;
                             fcdata.ProjectID = item3.ProjectID;
                             fcdata.Attachment = item3.Attachment;
-                            fcdata.UserID = i.Id;
-                            fcdata.AdminUserID = item3.AdminUserID;
+                            fcdata.UserID = i.UserName;
+                            fcdata.AdminUserID = Adminid;
                             fcdata.DateOfFinalComment = item3.DateOfFinalComment;
                             fcdata.Description = item3.Description;
                             fcmntlist.Add(fcdata);

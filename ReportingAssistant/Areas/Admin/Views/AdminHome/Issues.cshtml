@@ -33,163 +33,217 @@
 @using (Html.BeginForm("Insertd_data", "AdminHome", new { areas = "Admin" }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
-
-    for (int j = 0; j <= 6; j++)
+    if (Model.tlist.Count > 0)
     {
-        int tl = 0;
-        int tdl = 0;
-        int fcl = 0;
-        <button type="button" class="collapsible mt-2">@DateTime.Now.AddDays(-j).DayOfWeek,@DateTime.Now.AddDays(-j).ToString("dd/MMM/yyyy")</button>
-        <div class="content">
-            <button type="button" class="collapsible">Tasks Assigned</button>
-            <div class="content">
-                @if (Model.tlist.Count != 0)
-                {
-
-                    foreach (var i in Model.tlist)
+        foreach (var task in Model.tlist)
+        {
+            int tl = 0;
+            int tdl = 0;
+            int fcl = 0;
+            <button type="button" class="collapsible mt-2">@task.DateOfTask.DayOfWeek, @task.DateOfTask.ToString("dd/MMM/yyyy")</button>
+            <div class="content mt-2">
+                <button type="button" class="collapsible">Tasks Assigned</button>
+                <div class="content">
+                    @if (Model.tlist.Count != 0)
                     {
-                        if (i.DateOfTask == DateTime.Today.AddDays(-j))
+
+                        foreach (var i in Model.tlist)
                         {
-                            <div class="col-lg-12 col-md-12 col-sm-12    bootstrap-touchspin-down bootstrap-select">
-                                <button type="button" class="collapsible ">@(i.UserID != null && i.DateOfTask == DateTime.Today.AddDays(-j) ? i.UserID : "")</button>
+                            //if (i.DateOfTask == DateTime.Today.AddDays(-j))
+                            //{
+                            @*<div class="col-lg-12 col-md-12 col-sm-12 mt-2   bootstrap-touchspin-down bootstrap-select">
+                                <button type="button" class="collapsible">@(i.UserName != null? i.UserName : "")</button>
                                 <div class="content advance-table-row table-bordered" style="border-color:blue">
                                     <fieldset>
-                                        <legend>@(i.Screen != null && i.DateOfTask == DateTime.Today.AddDays(-j) ? i.Screen : "")</legend>
-                                        <h3>@(i.Description != null && i.DateOfTask == DateTime.Today.AddDays(-j) ? i.Description : "")</h3>
+                                        <legend>@(i.Screen != null? i.Screen : "")</legend>
+                                        <h3>@(i.Description != null? i.Description : "")</h3>
                                         @if (Model.AdminID == i.AdminUserID)
                                         {
                                             <a href="~/Admin/Task/TaskDetailsEdit?ids=@i.TaskID" class="btn btn-info">Edit</a>
                                         }
                                     </fieldset>
                                 </div>
+                            </div>*@
+                    <div class="col-lg-12">
+                        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active bg-light" id="tab-@i.UserName" data-toggle="tab" href="#taskContent" role="tab" onclick="toggleTaskAssigned()">
+                                    @(i.UserName ?? "No User Name")
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="adminTabsContent">
+                            <div class="tab-pane fade show" id="taskAssigned" role="tabpanel" style="display: block;">
+                                <div class="card border-primary mt-3">
+                                    <div class="card-header">
+                                        @(i.Screen ?? "No Screen Info")
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">@(!string.IsNullOrEmpty(i.Description) ? i.Description : "No Description Available")</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        @if (Model.AdminID == i.AdminUserID)
+                                        {
+                                            <a href="~/Admin/Task/TaskDetailsEdit?ids=@i.TaskID" class="btn btn-info">Edit</a>
+                                        }
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                    </div>
                             tl++;
+                            //}
+                        }
+                        if (tl == 0)
+                        {
+                            <p style="color:red">No Task Assigned</p>
                         }
                     }
-                    if (tl == 0)
+
+                    else if (Model.tlist.Count == 0)
                     {
                         <p style="color:red">No Task Assigned</p>
                     }
-                }
-
-                else if (Model.tlist.Count == 0)
-                {
-                    <p style="color:red">No Task Assigned</p>
-                }
-                else
-                {
-                    <p style="color:red">No Task Assigned</p>
-                }
-            </div>
-
-
-            <button type="button" class="collapsible">Task Done</button>
-            <div class="col-lg-12 col-md-12 col-sm-12 bootstrap-touchspin-down">
-                @if (Model.tdlist.Count != 0)
-                {
-
-                    foreach (var i2 in Model.tdlist)
+                    else
                     {
-                        if (i2.DateOfTaskDone == DateTime.Today.AddDays(-j))
-                        {
+                        <p style="color:red">No Task Assigned</p>
+                    }
+                </div>
 
-                            @*<div class="container-fluid advance-table-row table-bordered bootstrap-touchspin-up" style="border-color:green">*@
-                            <div class="col-lg-12 col-md-12 col-sm-12 bootstrap-touchspin-down bootstrap-select">
-                                <button type="button" class="collapsible ">@(i2.UserID == null ? "" : i2.DateOfTaskDone == DateTime.Today.AddDays(-j) ? i2.UserID : "")</button>
-                                <div class="content advance-table-row table-bordered" style="border-color:blue">
-                                    <fieldset>
-                                        <legend>@(i2.Screen != null && i2.DateOfTaskDone == DateTime.Today.AddDays(-j) ? i2.Screen : "")</legend>
-                                        <h3>@(i2.Description != null && i2.DateOfTaskDone == DateTime.Today.AddDays(-j) ? i2.Description : "")</h3>
-                                    </fieldset>
+
+                <button type="button" class="collapsible mt-2" onclick="toggleCard2()">Task Done</button>
+                <div class="col-lg-12 col-md-12 col-sm-12 bootstrap-touchspin-down">
+                    @if (Model.tdlist.Count != 0)
+                    {
+
+                        foreach (var i2 in Model.tdlist)
+                        {
+                            if (i2.DateOfTaskDone != null)
+                            {
+
+                                @*<div class="container-fluid advance-table-row table-bordered bootstrap-touchspin-up" style="border-color:green">*@
+
+                                @*<div class="col-lg-12 col-md-12 col-sm-12 mt-2 bootstrap-touchspin-down bootstrap-select">
+                                        <button type="button" class="collapsible ">@(i2.UserID == null ? "" : i2.UserID )</button>
+                                        <div class="content advance-table-row table-bordered" style="border-color:blue">
+                                            <fieldset>
+                                                <legend>@(i2.Screen != null ? i2.Screen : "")</legend>
+                                                <h3>@(i2.Description != null? i2.Description : "")</h3>
+                                            </fieldset>
+                                        </div>
+                                    </div>*@
+                    <div class="col-lg-12">
+                        <ul class="nav nav-tabs" id="userTabs" role="tablist" style="display: none;">
+                            <li class="nav-item">
+                                <a class="nav-link active bg-light" id="tab-@i2.UserID" data-toggle="tab" href="#taskContent" role="tab" onclick="toggleCard()">
+                                    @(i2.UserID ?? "No User Name")
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="userTabsContent">
+                            <div class="tab-pane fade show" id="taskContent" role="tabpanel" style="display: none;">
+                                <div class="card border-success">
+                                    <div class="card-header bg-success text-white">
+                                        @(i2.Screen ?? "No Screen Info")
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">Task completed on @i2.DateOfTaskDone.ToString("dd/MMM/yyyy")</h5>
+                                        <p class="card-text">@(!string.IsNullOrEmpty(i2.Description) ? i2.Description : "No Description Available")</p>
+                                    </div>
                                 </div>
                             </div>
-                            tdl++;
+                        </div>
+                    </div>
+                                tdl++;
+                            }
+                        }
+                        if (tdl == 0)
+                        {
+                            <p style="color:red">No Task Done Found</p>
                         }
                     }
-                    if (tdl == 0)
+
+                    else if (Model.tdlist.Count == 0)
                     {
                         <p style="color:red">No Task Done Found</p>
                     }
-                }
 
-                else if (Model.tdlist.Count == 0)
-                {
-                    <p style="color:red">No Task Done Found</p>
-                }
-
-                else
-                {
-                    <p style="color:red">No Task Done Found</p>
-                }
-            </div>
-
-
-            <button type="button" class="collapsible mb-2">Final Comment</button>
-            <div class="content">
-
-                @if (Model.fclist.Count != 0)
-                {
-
-                    foreach (var i3 in Model.fclist)
+                    else
                     {
-                        if (i3.DateOfFinalComment == DateTime.Today.AddDays(-j))
+                        <p style="color:red">No Task Done Found</p>
+                    }
+                </div>
+
+
+                <button type="button" class="collapsible mb-2 mt-2">Final Comment</button>
+                <div class="content">
+
+                    @if (Model.fclist.Count != 0)
+                    {
+
+                        foreach (var i3 in Model.fclist)
                         {
-                            <div class="col-lg-12 col-md12 col-sm-12 bootstrap-touchspin-down bootstrap-select">
-                                <button type="button" class="collapsible ">@(i3.UserID == null ? "" : i3.DateOfFinalComment == DateTime.Today.AddDays(-j) ? i3.UserID : "")</button>
-                                <div class="content advance-table-row table-bordered" style="border-color:blue">
-                                    @*<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>*@
-                                    <fieldset>
-                                        <legend>@(i3.Screen != null && i3.DateOfFinalComment == DateTime.Today.AddDays(-j) ? i3.Screen : "")</legend>
-                                        <h3>@(i3.Description != null && i3.DateOfFinalComment == DateTime.Today.AddDays(-j) ? i3.Description : "")</h3>
-                                        @if (Model.AdminID == i3.AdminUserID)
-                                        {
-                                            <a href="~/Admin/FinalComment/FinalCDetailsEdit?ids=@i3.FinalCommentID" class="btn btn-info">Edit</a>
-                                        }
-                                    </fieldset>
+                            if (i3.DateOfFinalComment != null)
+                            {
+                                <div class="col-lg-12 col-md12 col-sm-12 bootstrap-touchspin-down bootstrap-select">
+                                    <button type="button" class="collapsible ">@(i3.UserID == null ? "" : i3.UserID)</button>
+                                    <div class="content advance-table-row table-bordered" style="border-color:blue">
+                                        @*<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>*@
+                                        <fieldset>
+                                            <legend>@(i3.Screen != null? i3.Screen:"")</legend>
+                                            <h3>@(i3.Description != null? i3.Description : "")</h3>
+                                            @if (Model.AdminID == i3.AdminUserID)
+                                            {
+                                                <a href="~/Admin/FinalComment/FinalCDetailsEdit?ids=@i3.FinalCommentID" class="btn btn-info">Edit</a>
+                                            }
+                                        </fieldset>
+                                    </div>
                                 </div>
-                            </div>
-                            fcl++;
+                                fcl++;
+                            }
+                        }
+                        if (fcl == 0)
+                        {
+                            <p style="color:red">No Final Comment Found</p>
                         }
                     }
-                    if (fcl == 0)
+                    else if (Model.fclist.Count == 0)
                     {
                         <p style="color:red">No Final Comment Found</p>
                     }
-                }
-                else if (Model.fclist.Count == 0)
-                {
-                    <p style="color:red">No Final Comment Found</p>
-                }
-                else
-                {
-                    <p style="color:red">No Final Comment Found</p>
-                }
-                @if (tdl > 0)
-                {
+                    else
+                    {
+                        <p style="color:red">No Final Comment Found</p>
+                    }
+                    @if (tdl > 0)
+                    {
 
-                    <lebel style="color:green">New Final Comment</lebel>
+                        <lebel style="color:green">New Final Comment</lebel>
 
-                    <div class="container-fluid advance-table-row table-bordered bootstrap-touchspin-up" style="border-color:green" id="tddata_div">
-                        <fieldset>
-                            <legend class="col-lg-12 col-md-12 col-sm-12 bootstrap-touchspin-down">
-                                Project Name @Html.DropDownListFor(m => m.ProjectID, new SelectList(ViewBag.pr_data, "Value", "Text"), "---select---", new { @class = "form-control" })
-                                User Name @Html.DropDownListFor(m => m.UserID, new SelectList(ViewBag.user_data, "Value", "Text"), "---select---", new { @class = "form-control" })
-                                @Html.TextBoxFor(m => m.Screen, new { @class = "form-control", placeholder = "Screen Name" })
-                                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
+                        <div class="container-fluid advance-table-row table-bordered bootstrap-touchspin-up" style="border-color:green" id="tddata_div">
+                            <fieldset>
+                                <legend class="col-lg-12 col-md-12 col-sm-12 bootstrap-touchspin-down">
+                                    Project Name @Html.DropDownListFor(m => m.ProjectID, new SelectList(ViewBag.pr_data, "Value", "Text"), "---select---", new { @class = "form-control mb-2" })
+                                    User Name @Html.DropDownListFor(m => m.UserID, new SelectList(ViewBag.user_data, "Value", "Text"), "---select---", new { @class = "form-control mb-2" })
+                                    @Html.TextBoxFor(m => m.Screen, new { @class = "form-control mb-2", placeholder = "Screen Name" })
+                                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control mb-3", placeholder = "Description" })
 
-                                <label for="image">Image</label>
-                                <input type="file" class="form-control-file" id="image" name="BaseImg" />
-                                <button class="btn btn-success" type="submit" id="submit">Submit </button>
-                            </legend>
-                        </fieldset>
+                                    <label for="image">Image</label>
+                                    <input type="file" class="form-control-file" id="image" name="BaseImg" />
+                                    <button class="btn btn-success" type="submit" id="submit">Submit </button>
+                                </legend>
+                            </fieldset>
 
-                    </div>
+                        </div>
 
-                }
+                    }
+                </div>
             </div>
-        </div>
 
+        }
     }
+
 
 }
 
@@ -215,5 +269,28 @@
             }
         });
     }
-
+    function toggleCard() {
+        var card = document.getElementById("taskContent");
+        if (card.style.display === "none" || card.style.display === "") {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    }
+    function toggleCard2() {
+        var card = document.getElementById("userTabs");
+        if (card.style.display === "none" || card.style.display === "") {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    }
+    function toggleTaskAssigned() {
+        var card = document.getElementById("taskAssigned");
+        if (card.style.display === "none" || card.style.display === "") {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    }
 </script>

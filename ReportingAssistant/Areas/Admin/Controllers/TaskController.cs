@@ -118,7 +118,7 @@ namespace ReportingAssistant.Areas.Admin.Controllers
             {
 
                 var db = new ReportingDbContext();
-
+                HttpCookie AdminID = Request.Cookies["UserId"];
                 dropdown();
                 string path = uploadImage(ImageAttached);
                 if (path.Equals("-1"))
@@ -128,7 +128,7 @@ namespace ReportingAssistant.Areas.Admin.Controllers
                 else
                 {
                     Task databaseData = db.Tasks.Where(m => m.TaskID == data.TaskID).FirstOrDefault();
-                    databaseData.AdminUserID = data.AdminUserID;
+                    databaseData.AdminUserID = AdminID.Value;
                     databaseData.Description = data.Description;
                     databaseData.ProjectID = data.ProjectID;
                     databaseData.Screen = data.Screen;

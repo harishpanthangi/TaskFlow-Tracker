@@ -8,7 +8,7 @@ namespace ReportingAssistant.Models
 {
     public class ReportingDbContext:DbContext
     {
-        public ReportingDbContext() : base("MyConnectionString")
+        public ReportingDbContext() : base("MyIdentityDbConnection")
         {
 
         }

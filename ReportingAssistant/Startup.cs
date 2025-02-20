@@ -21,8 +21,9 @@ namespace ReportingAssistant
         }
         public void CreateRolesandUser()
         {
-            var ManageRole = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>());
             var db = new ApplicationDbContext();
+            var ManageRole = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            
             var userAppUserStore = new ApplicationUserStore(db);
             var userManager = new ApplicationUserManager(userAppUserStore);
             if (!ManageRole.RoleExists("Admin"))
